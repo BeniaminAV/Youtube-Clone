@@ -11,7 +11,9 @@ interface CategoriesSectionProps {
 }
 export const CategoriesSection = ({ categoryId }: CategoriesSectionProps) => {
   return (
-    <Suspense fallback={<FilterCarousel isLoading data={[]} onSelect={() => {}} />}>
+    <Suspense
+      fallback={<FilterCarousel isLoading data={[]} onSelect={() => {}} />}
+    >
       <ErrorBoundary fallback={<p>Error...</p>}>
         <CategoriesSectionSuspens categoryId={categoryId} />
       </ErrorBoundary>
@@ -21,7 +23,7 @@ export const CategoriesSection = ({ categoryId }: CategoriesSectionProps) => {
 
 const CategoriesSectionSuspens = ({ categoryId }: CategoriesSectionProps) => {
   const [categories] = trpc.categories.getMany.useSuspenseQuery();
-  const router = useRouter()
+  const router = useRouter();
 
   const data = categories.map(({ name, id }) => ({
     value: id,
@@ -32,19 +34,13 @@ const CategoriesSectionSuspens = ({ categoryId }: CategoriesSectionProps) => {
     const url = new URL(window.location.href);
 
     if (value) {
-      url.searchParams.set("categoryId", value)
+      url.searchParams.set("categoryId", value);
     } else {
-      url.searchParams.delete("categoryId")
+      url.searchParams.delete("categoryId");
     }
 
     router.push(url.toString());
-  }
+  };
 
-  return (
-    <FilterCarousel
-      onSelect={onSelect}
-      value={categoryId}
-      data={data}
-    />
-  );
+  return <FilterCarousel onSelect={onSelect} value={categoryId} data={data} />;
 };
